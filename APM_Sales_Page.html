@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMCREATIVE: The Quiet Sell — Paid Ads Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── THEME VARIABLES ──────────────────────────────────────────────────────── */
+:root{
+  --gold:#b8965a;--gold-light:#d4b07a;--gold-pale:#f4edd8;
+  --burgundy:#6b1a2a;--burgundy-mid:#8b2236;--burgundy-lt:#c4667a;
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--bg2:#141414;--bg3:#1a1a1a;--bg4:#222222;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:rgba(255,255,255,0.88);--text2:rgba(255,255,255,0.55);--text3:rgba(255,255,255,0.3);
+  --heading:#ffffff;--card:rgba(255,255,255,0.03);--card-hover:rgba(255,255,255,0.05);
+  --nav-bg:rgba(10,10,10,0.95);--hero-overlay:rgba(139,34,54,0.13);
+  --pill-bg:rgba(184,150,90,0.1);--pill-text:var(--gold);
+  --tag-bg:rgba(255,255,255,0.05);--tag-text:rgba(255,255,255,0.4);
+  --check:#7ecb8f;--cross:#e85d5d;
+  --price-bg:rgba(184,150,90,0.06);--price-border:rgba(184,150,90,0.25);
+}
+[data-theme="light"]{
+  --bg:#faf8f5;--bg2:#f4f0ea;--bg3:#ede8e0;--bg4:#e5dfd5;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+  --text:rgba(20,15,10,0.82);--text2:rgba(20,15,10,0.55);--text3:rgba(20,15,10,0.35);
+  --heading:#0f0a06;--card:rgba(0,0,0,0.02);--card-hover:rgba(0,0,0,0.04);
+  --nav-bg:rgba(250,248,245,0.96);--hero-overlay:rgba(107,26,42,0.06);
+  --pill-bg:rgba(184,150,90,0.12);--pill-text:#7a5c2a;
+  --tag-bg:rgba(0,0,0,0.05);--tag-text:rgba(0,0,0,0.45);
+  --check:#2a8c46;--cross:#c0392b;
+  --price-bg:rgba(184,150,90,0.07);--price-border:rgba(184,150,90,0.3);
+}
+
+/* ── RESET & BASE ─────────────────────────────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background 0.3s,color 0.3s;}
+a{text-decoration:none;}
+img{max-width:100%;}
+
+/* ── NAV ──────────────────────────────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--nav-bg);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;transition:background 0.3s;}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--heading);letter-spacing:0.04em;}
+.nav-right{display:flex;align-items:center;gap:14px;}
+.theme-toggle{background:none;border:1px solid var(--border2);border-radius:20px;padding:5px 12px;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);cursor:pointer;transition:all 0.2s;}
+.theme-toggle:hover{border-color:var(--gold);color:var(--gold);}
+.nav-cta{background:var(--burgundy-mid);color:#fff;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:9px 20px;border-radius:2px;border:none;cursor:pointer;transition:background 0.2s;font-family:'Jost',sans-serif;}
+.nav-cta:hover{background:var(--burgundy);}
+@media(max-width:600px){nav{padding:12px 20px;}.nav-brand{font-size:13px;}}
+
+/* ── HERO ─────────────────────────────────────────────────────────────────── */
+.hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 32px 100px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 80%,var(--hero-overlay),transparent 70%);}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;position:relative;z-index:2;opacity:0;animation:fadeUp 0.9s 0.2s forwards;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,7.5vw,82px);font-weight:700;line-height:0.97;color:var(--heading);position:relative;z-index:2;max-width:820px;opacity:0;animation:fadeUp 0.9s 0.35s forwards;}
+.hero h1 em{font-style:italic;color:var(--gold-light);}
+.hero-sub{font-size:clamp(15px,1.8vw,18px);font-weight:300;color:var(--text2);max-width:520px;line-height:1.8;position:relative;z-index:2;margin:28px auto 0;opacity:0;animation:fadeUp 0.9s 0.5s forwards;}
+.hero-cta-group{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:44px;position:relative;z-index:2;opacity:0;animation:fadeUp 0.9s 0.65s forwards;}
+.btn-primary{background:var(--burgundy-mid);color:#fff;font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;padding:16px 36px;border-radius:2px;border:none;cursor:pointer;transition:all 0.2s;font-family:'Jost',sans-serif;display:inline-block;}
+.btn-primary:hover{background:var(--burgundy);transform:translateY(-1px);}
+.hero-reassurance{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);}
+.hero-stats{display:flex;gap:40px;margin-top:64px;position:relative;z-index:2;opacity:0;animation:fadeUp 0.9s 0.8s forwards;justify-content:center;flex-wrap:wrap;}
+.hero-stat{text-align:center;}
+.hero-stat-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--heading);line-height:1;}
+.hero-stat-num em{color:var(--gold-light);font-style:italic;}
+.hero-stat-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);margin-top:6px;}
+.hero-divider{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);}
+
+/* ── SECTION BASE ─────────────────────────────────────────────────────────── */
+.section{max-width:860px;margin:0 auto;padding:96px 32px;}
+.section-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4.5vw,48px);font-weight:700;line-height:1.05;color:var(--heading);margin-bottom:20px;}
+.section-title em{font-style:italic;color:var(--gold-light);}
+.section-body{font-size:16px;font-weight:300;line-height:1.9;color:var(--text2);max-width:640px;}
+.divider{max-width:860px;margin:0 auto;border:none;border-top:1px solid var(--border);}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── PAIN SECTION ─────────────────────────────────────────────────────────── */
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
+@media(max-width:700px){.pain-grid{grid-template-columns:1fr;}}
+.pain-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:28px 24px;transition:border-color 0.25s;}
+.pain-card:hover{border-color:rgba(184,150,90,0.2);}
+.pain-icon{font-size:22px;margin-bottom:14px;}
+.pain-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--heading);margin-bottom:10px;line-height:1.2;}
+.pain-body{font-size:14px;font-weight:300;line-height:1.8;color:var(--text2);}
+
+/* ── BRIDGE ───────────────────────────────────────────────────────────────── */
+.bridge-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:96px 32px;}
+.bridge-inner{max-width:860px;margin:0 auto;}
+.bridge-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3.5vw,38px);font-weight:600;line-height:1.3;color:var(--heading);max-width:700px;border-left:2px solid var(--gold);padding-left:28px;margin-bottom:28px;}
+.bridge-quote em{font-style:italic;color:var(--gold-light);}
+.bridge-body{font-size:16px;font-weight:300;line-height:1.9;color:var(--text2);max-width:640px;}
+
+/* ── WHAT'S INSIDE ────────────────────────────────────────────────────────── */
+.tracks-wrap{margin-top:48px;display:flex;flex-direction:column;gap:32px;}
+.track-block{background:var(--card);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.track-header-bar{padding:22px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;}
+.track-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.track-dot-1{background:var(--gold);}
+.track-dot-2{background:var(--burgundy-lt);}
+.track-name{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);}
+.track-title-sm{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--heading);}
+.module-list-sm{padding:20px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(max-width:600px){.module-list-sm{grid-template-columns:1fr;}}
+.module-pill{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--card-hover);border-radius:3px;border:1px solid var(--border);}
+.module-pill-num{font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.1em;flex-shrink:0;margin-top:1px;}
+.module-pill-text{font-size:12px;line-height:1.5;color:var(--text2);}
+
+/* ── BONUS STRIP ──────────────────────────────────────────────────────────── */
+.bonus-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px;}
+@media(max-width:700px){.bonus-strip{grid-template-columns:1fr;}}
+.bonus-tile{padding:24px 20px;background:var(--price-bg);border:1px solid var(--price-border);border-radius:4px;position:relative;overflow:hidden;}
+.bonus-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.bonus-tile-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.bonus-tile-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--heading);margin-bottom:8px;line-height:1.2;}
+.bonus-tile-body{font-size:12px;line-height:1.7;color:var(--text2);}
+
+/* ── FOR / NOT FOR ────────────────────────────────────────────────────────── */
+.for-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px;}
+@media(max-width:640px){.for-grid{grid-template-columns:1fr;}}
+.for-col{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:28px 24px;}
+.for-col-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:18px;}
+.for-col-title-yes{color:var(--check);}
+.for-col-title-no{color:var(--cross);}
+.for-item{display:flex;gap:10px;margin-bottom:12px;font-size:13px;line-height:1.6;color:var(--text2);}
+.for-item:last-child{margin-bottom:0;}
+.for-check{color:var(--check);flex-shrink:0;font-size:14px;}
+.for-cross{color:var(--cross);flex-shrink:0;font-size:14px;}
+
+/* ── VALUE STACK ──────────────────────────────────────────────────────────── */
+.value-stack{margin-top:40px;display:flex;flex-direction:column;gap:8px;}
+.value-row{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:3px;gap:16px;}
+.value-row-name{font-size:14px;color:var(--text);font-weight:400;}
+.value-row-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:0.08em;text-decoration:line-through;white-space:nowrap;}
+.value-total{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;background:var(--price-bg);border:1px solid var(--price-border);border-radius:3px;margin-top:4px;gap:16px;}
+.value-total-name{font-size:14px;font-weight:500;color:var(--heading);}
+.value-total-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.08em;}
+
+/* ── PRICING ──────────────────────────────────────────────────────────────── */
+.pricing-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:96px 32px;}
+.pricing-inner{max-width:560px;margin:0 auto;text-align:center;}
+.price-card{background:var(--price-bg);border:1px solid var(--price-border);border-radius:6px;padding:48px 40px;position:relative;overflow:hidden;margin-top:40px;}
+.price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.price-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.price-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--heading);margin-bottom:8px;}
+.price-amount{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;color:var(--heading);line-height:1;margin:20px 0 4px;}
+.price-amount sup{font-size:32px;vertical-align:super;line-height:0;color:var(--gold-light);}
+.price-note{font-size:13px;color:var(--text3);margin-bottom:28px;}
+.price-includes{text-align:left;margin-bottom:32px;display:flex;flex-direction:column;gap:8px;}
+.price-include-item{display:flex;gap:10px;font-size:13px;line-height:1.6;color:var(--text2);}
+.price-include-item span:first-child{color:var(--check);flex-shrink:0;}
+.price-cta{width:100%;background:var(--burgundy-mid);color:#fff;font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;padding:18px;border-radius:2px;border:none;cursor:pointer;transition:background 0.2s;font-family:'Jost',sans-serif;}
+.price-cta:hover{background:var(--burgundy);}
+.price-guarantee{margin-top:18px;font-size:12px;color:var(--text3);line-height:1.7;}
+.price-guarantee strong{color:var(--text2);}
+
+/* ── TESTIMONIALS ─────────────────────────────────────────────────────────── */
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
+@media(max-width:700px){.testimonials-grid{grid-template-columns:1fr;}}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:24px 22px;}
+.testi-quote{font-size:14px;line-height:1.8;color:var(--text2);margin-bottom:16px;font-style:italic;}
+.testi-author{display:flex;flex-direction:column;gap:2px;}
+.testi-name{font-size:13px;font-weight:500;color:var(--heading);}
+.testi-handle{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--text3);}
+
+/* ── FAQ ──────────────────────────────────────────────────────────────────── */
+.faq-list{margin-top:40px;display:flex;flex-direction:column;gap:2px;}
+.faq-item{border:1px solid var(--border);border-radius:3px;overflow:hidden;}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:'Jost',sans-serif;font-size:14px;font-weight:400;color:var(--heading);gap:16px;transition:background 0.2s;}
+.faq-q:hover{background:var(--card);}
+.faq-q.open{background:var(--card);}
+.faq-arrow{font-size:12px;color:var(--gold);flex-shrink:0;transition:transform 0.25s;}
+.faq-q.open .faq-arrow{transform:rotate(180deg);}
+.faq-a{display:none;padding:0 20px 18px;font-size:14px;line-height:1.8;color:var(--text2);font-weight:300;}
+.faq-a.open{display:block;}
+
+/* ── FINAL CTA ────────────────────────────────────────────────────────────── */
+.final-cta{text-align:center;padding:100px 32px;background:var(--bg);}
+.final-cta h2{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,5vw,54px);font-weight:700;color:var(--heading);max-width:640px;margin:0 auto 20px;line-height:1.05;}
+.final-cta h2 em{font-style:italic;color:var(--gold-light);}
+.final-cta p{font-size:16px;font-weight:300;line-height:1.8;color:var(--text2);max-width:480px;margin:0 auto 36px;}
+
+/* ── FOOTER ───────────────────────────────────────────────────────────────── */
+footer{border-top:1px solid var(--border);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;max-width:100%;flex-wrap:wrap;gap:12px;}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;color:var(--heading);}
+.footer-note{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);}
+
+/* ── ANIMATIONS ───────────────────────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-6px);}}
+</style>
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '775895042007303');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=775895042007303&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">AMCREATIVE</div>
+  <div class="nav-right">
+    <button class="theme-toggle" onclick="toggleTheme()">☀ / ◑ Theme</button>
+    <a href="https://stan.store/AMdigital_era/p/amcreative--the-quiet-sell" target="_blank" class="nav-cta">Get In at $23 →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-eyebrow">AMCREATIVE · The Quiet Sell</span>
+  <h1>The reason your content<br>isn't converting has <em>nothing<br>to do</em> with your follower count.</h1>
+  <p class="hero-sub">A complete paid ads course built for digital product sellers who are done posting without a return — and ready to build a system that actually works.</p>
+  <div class="hero-cta-group">
+    <a href="https://stan.store/AMdigital_era/p/amcreative--the-quiet-sell" target="_blank" class="btn-primary">Claim Your Spot at $23 →</a>
+    <span class="hero-reassurance">First 20 people get $23 · Then $37 for 48 hrs · Then $67</span>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num"><em>14</em></div>
+      <div class="hero-stat-lbl">Core Modules</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><em>2</em></div>
+      <div class="hero-stat-lbl">Learning Tracks</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><em>28+</em></div>
+      <div class="hero-stat-lbl">Interactive Tools</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><em>3</em></div>
+      <div class="hero-stat-lbl">Bonus Modules</div>
+    </div>
+  </div>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- PAIN -->
+<section class="section reveal">
+  <span class="section-label">The real problem</span>
+  <h2 class="section-title">You've been told the wrong<br>thing about why ads <em>fail.</em></h2>
+  <p class="section-body">It's not your budget. It's not your niche. It's not that ads "don't work for small creators." The problem is structural — and it's fixable.</p>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-icon">◎</div>
+      <div class="pain-title">Posting without a system</div>
+      <div class="pain-body">You create content, it gets engagement, but it doesn't convert. You add paid promotion and it just spends your money faster. The issue isn't the content — it's the absence of a structured system behind it.</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">◈</div>
+      <div class="pain-title">Optimising the wrong metric</div>
+      <div class="pain-body">Followers, likes, reach — none of these pay bills. If your measurement system isn't built around buyer psychology and conversion, you'll keep growing an audience that doesn't buy.</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">◉</div>
+      <div class="pain-title">Information without direction</div>
+      <div class="pain-body">You've watched the YouTube videos, taken the free courses, read the threads. You have fragments of knowledge but no sequence. What you need isn't more information — it's a clear order of operations.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- BRIDGE -->
+<div class="bridge-section reveal">
+  <div class="bridge-inner">
+    <div class="bridge-quote">"What if ads weren't the<br>complicated part — and the<br>complicated part was the <em>thinking<br>you'd been skipping?"</em></div>
+    <p class="bridge-body">The Quiet Sell teaches you to think like an operator, not a content creator. You learn why people buy, how the algorithm actually works, and how to build a creative system that generates consistent sales — without needing a large audience, complicated funnels, or years of experience. This is the course that replaces the guesswork with a structured mental model you can apply to any offer, any budget, any starting point.</p>
+  </div>
+</div>
+
+<!-- WHAT'S INSIDE -->
+<section class="section reveal" id="inside">
+  <span class="section-label">Inside the course</span>
+  <h2 class="section-title">Two tracks. One complete<br><em>operating system.</em></h2>
+  <p class="section-body">Track 1 builds your foundation — the mechanics of how Meta ads actually work. Track 2 is where you learn to think creatively and strategically like an operator who scales.</p>
+
+  <div class="tracks-wrap">
+    <div class="track-block">
+      <div class="track-header-bar">
+        <div class="track-dot track-dot-1"></div>
+        <div>
+          <div class="track-name">Track 1 · 7 Modules</div>
+          <div class="track-title-sm">The Foundation — Understanding the Machine</div>
+        </div>
+      </div>
+      <div class="module-list-sm">
+        <div class="module-pill"><span class="module-pill-num">01</span><span class="module-pill-text">The Meta Auction — How the System Actually Works</span></div>
+        <div class="module-pill"><span class="module-pill-num">02</span><span class="module-pill-text">Platform Selection — Where to Run First</span></div>
+        <div class="module-pill"><span class="module-pill-num">03</span><span class="module-pill-text">Campaign Architecture — The Hierarchy that Matters</span></div>
+        <div class="module-pill"><span class="module-pill-num">04</span><span class="module-pill-text">Audience Strategy — Targeting Without Overthinking</span></div>
+        <div class="module-pill"><span class="module-pill-num">05</span><span class="module-pill-text">Ad Anatomy — What Every Winning Ad Is Made Of</span></div>
+        <div class="module-pill"><span class="module-pill-num">06</span><span class="module-pill-text">Reading the Data — Metrics That Actually Mean Something</span></div>
+        <div class="module-pill"><span class="module-pill-num">07</span><span class="module-pill-text">Your First Campaign — Setup, Launch, and What to Watch</span></div>
+      </div>
+    </div>
+    <div class="track-block">
+      <div class="track-header-bar">
+        <div class="track-dot track-dot-2"></div>
+        <div>
+          <div class="track-name">Track 2 · 7 Modules</div>
+          <div class="track-title-sm">The Operator — Creative, Testing, and Scale</div>
+        </div>
+      </div>
+      <div class="module-list-sm">
+        <div class="module-pill"><span class="module-pill-num">08</span><span class="module-pill-text">Creative Strategy — Building Ads That Stop the Scroll</span></div>
+        <div class="module-pill"><span class="module-pill-num">09</span><span class="module-pill-text">Hook Psychology — The First 3 Seconds That Decide Everything</span></div>
+        <div class="module-pill"><span class="module-pill-num">10</span><span class="module-pill-text">Ad Formats &amp; UGC — Choosing the Right Container</span></div>
+        <div class="module-pill"><span class="module-pill-num">11</span><span class="module-pill-text">Creative Testing — How to Test Without Contaminating Your Data</span></div>
+        <div class="module-pill"><span class="module-pill-num">12</span><span class="module-pill-text">Funnel Diagnostics &amp; Attribution — What the Data Is Telling You</span></div>
+        <div class="module-pill"><span class="module-pill-num">13</span><span class="module-pill-text">Creative Iteration &amp; Fatigue — Keeping Your System Fresh</span></div>
+        <div class="module-pill"><span class="module-pill-num">14</span><span class="module-pill-text">The Creative Feedback Loop — Building a System That Compounds</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BONUSES -->
+  <div style="margin-top:56px;">
+    <span class="section-label">Bonus modules included</span>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3.5vw,34px);font-weight:700;color:var(--heading);margin-bottom:6px;">Three standalone modules <em>beyond the curriculum.</em></h3>
+    <p style="font-size:14px;font-weight:300;color:var(--text2);line-height:1.8;max-width:580px;">Depth modules for students who finish the tracks and want to go further — covering AI, buyer psychology, and your 90-day execution plan.</p>
+    <div class="bonus-strip">
+      <div class="bonus-tile">
+        <div class="bonus-tile-label">Bonus 01</div>
+        <div class="bonus-tile-title">The AI Ad Era — Meta Andromeda</div>
+        <div class="bonus-tile-body">How Meta's AI delivery system reads your creative as a targeting signal — and how to write ads that feed it exactly what it needs.</div>
+      </div>
+      <div class="bonus-tile">
+        <div class="bonus-tile-label">Bonus 02</div>
+        <div class="bonus-tile-title">The Psychology of Buying</div>
+        <div class="bonus-tile-body">Six psychological triggers behind digital product purchases — mapped directly to your ad copy and offer positioning.</div>
+      </div>
+      <div class="bonus-tile">
+        <div class="bonus-tile-label">Bonus 03</div>
+        <div class="bonus-tile-title">Your 90-Day Ads Roadmap</div>
+        <div class="bonus-tile-body">A phase-by-phase execution plan from zero to your first profitable, data-backed campaign system.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FOR / NOT FOR -->
+<section class="section reveal">
+  <span class="section-label">Is this for you?</span>
+  <h2 class="section-title">This course was built for<br>one type of person. <em>Is that you?</em></h2>
+  <div class="for-grid">
+    <div class="for-col">
+      <div class="for-col-title for-col-title-yes">✓ This is for you if</div>
+      <div class="for-item"><span class="for-check">✓</span><span>You have a digital product (or you're building one) and you want to sell it with paid ads</span></div>
+      <div class="for-item"><span class="for-check">✓</span><span>You've tried posting consistently but your income doesn't reflect your effort</span></div>
+      <div class="for-item"><span class="for-check">✓</span><span>You want to understand the system behind the sale — not just tactics and templates</span></div>
+      <div class="for-item"><span class="for-check">✓</span><span>You're willing to spend $10–$20/day to test and learn — ads require budget, even at the start</span></div>
+      <div class="for-item"><span class="for-check">✓</span><span>You want a clear, sequenced system instead of another pile of disconnected advice</span></div>
+    </div>
+    <div class="for-col">
+      <div class="for-col-title for-col-title-no">✗ This is not for you if</div>
+      <div class="for-item"><span class="for-cross">✗</span><span>You're looking for a "done for you" shortcut that requires no thinking or effort on your part</span></div>
+      <div class="for-item"><span class="for-cross">✗</span><span>You don't have an offer yet and you're hoping ads will validate a product that doesn't exist</span></div>
+      <div class="for-item"><span class="for-cross">✗</span><span>You want overnight results — this builds a system that compounds, not a trick that spikes</span></div>
+      <div class="for-item"><span class="for-cross">✗</span><span>You're not willing to look at data — this course requires you to read your numbers honestly</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TESTIMONIALS -->
+<section class="section reveal">
+  <span class="section-label">Results</span>
+  <h2 class="section-title">What happens when the<br>system <em>clicks.</em></h2>
+  <div class="testimonials-grid">
+    <!-- REPLACE WITH REAL TESTIMONIALS WHEN AVAILABLE -->
+    <div class="testi-card">
+      <div class="testi-quote">"okay i was posting every single day for 8 months and making literally nothing. did modules 4 + 9 back to back and had my first $400 week off a $19 template. the targeting section rewired my whole brain."</div>
+      <div class="testi-author">
+        <span class="testi-name">Marisol T.</span>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"i kept thinking my ads were the problem but it was never the ads. module 12 helped me find THREE things wrong with my funnel in like one afternoon. actually embarrassing how long i was guessing before this."</div>
+      <div class="testi-author">
+        <span class="testi-name">Dani R.</span>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"i spent 2 years trying to figure out creative testing from free content and free content alone was NOT it. this laid it out so clearly + the tools actually make you do it, not just read about it. genuinely saved me months."</div>
+      <div class="testi-author">
+        <span class="testi-name">Priya M.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- VALUE STACK -->
+<section class="section reveal">
+  <span class="section-label">What you're getting</span>
+  <h2 class="section-title">The complete bundle, <em>laid out.</em></h2>
+  <div style="margin-bottom:10px;">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);">PRODUCT 01 · THE QUIET SELL — Complete Ads Course</div>
+  </div>
+  <div class="value-stack">
+    <div class="value-row"><span class="value-row-name">Track 1 — The Foundation (7 Modules + Interactive Tools)</span><span class="value-row-val">$197</span></div>
+    <div class="value-row"><span class="value-row-name">Track 2 — The Operator (7 Modules + Interactive Tools)</span><span class="value-row-val">$197</span></div>
+    <div class="value-row"><span class="value-row-name">28+ Interactive Practice Tools built into the curriculum</span><span class="value-row-val">$97</span></div>
+    <div class="value-row"><span class="value-row-name">Bonus 01 — The AI Ad Era: Meta Andromeda</span><span class="value-row-val">$47</span></div>
+    <div class="value-row"><span class="value-row-name">Bonus 02 — The Psychology of Buying</span><span class="value-row-val">$47</span></div>
+    <div class="value-row"><span class="value-row-name">Bonus 03 — Your 90-Day Ads Roadmap</span><span class="value-row-val">$47</span></div>
+  </div>
+  <div style="margin:16px 0 8px;">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);">PRODUCT 02 · THE AD PLAYBOOK — Included in Bundle</div>
+  </div>
+  <div class="value-stack">
+    <div class="value-row"><span class="value-row-name">The Ad Playbook — plug-and-play ads guide for digital product sellers</span><span class="value-row-val">$67</span></div>
+    <div class="value-row"><span class="value-row-name">Three-campaign system (Awareness, Traffic, Sales)</span><span class="value-row-val">—</span></div>
+    <div class="value-row"><span class="value-row-name">11 ad hook types with copy frameworks and examples</span><span class="value-row-val">—</span></div>
+    <div class="value-row"><span class="value-row-name">Campaign launch checklist + scaling framework</span><span class="value-row-val">—</span></div>
+    <div class="value-total"><span class="value-total-name">Total bundle value</span><span class="value-total-val">$699 in value</span></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<div class="pricing-section reveal" id="pricing">
+  <div class="pricing-inner">
+    <span class="section-label" style="display:block;text-align:center;">Founder's Pricing</span>
+    <h2 class="section-title" style="text-align:center;">Get in early.<br><em>Price goes up after.</em></h2>
+
+    <!-- PRICE LADDER -->
+    <div style="display:flex;gap:8px;margin-bottom:32px;justify-content:center;flex-wrap:wrap;">
+      <div style="flex:1;min-width:120px;padding:14px 16px;background:rgba(184,150,90,0.1);border:1px solid rgba(184,150,90,0.35);border-radius:3px;text-align:center;position:relative;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Now</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:#fff;line-height:1;">$23</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">First 20 people</div>
+        <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--gold);color:#0a0a0a;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;padding:2px 8px;border-radius:10px;white-space:nowrap;">You are here</div>
+      </div>
+      <div style="display:flex;align-items:center;color:rgba(255,255,255,0.2);font-size:16px;">→</div>
+      <div style="flex:1;min-width:120px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:3px;text-align:center;opacity:0.6;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;">Next</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:rgba(255,255,255,0.4);line-height:1;">$37</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.25);margin-top:4px;">After 20 spots · 48 hrs</div>
+      </div>
+      <div style="display:flex;align-items:center;color:rgba(255,255,255,0.2);font-size:16px;">→</div>
+      <div style="flex:1;min-width:120px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:3px;text-align:center;opacity:0.45;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:6px;">Final</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:rgba(255,255,255,0.3);line-height:1;">$67</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:4px;">Settled price</div>
+      </div>
+    </div>
+
+    <!-- SPOTS NOTE -->
+    <div style="background:rgba(107,26,42,0.15);border:1px solid rgba(184,150,90,0.2);border-radius:4px;padding:14px 20px;margin-bottom:28px;text-align:center;">
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);">The <strong style="color:#fff;">$23 price is for the first 20 people only.</strong> After that it moves to <strong style="color:#fff;">$37 for 48 hours</strong>, then <strong style="color:#fff;">$67</strong> — no exceptions.</div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-eyebrow">AMCREATIVE — Founder's Price</div>
+      <div class="price-name">The Quiet Sell + The Ad Playbook</div>
+      <div style="display:flex;align-items:baseline;gap:12px;justify-content:center;margin:20px 0 4px;">
+        <div class="price-amount" style="margin:0;"><sup>$</sup>23</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:rgba(255,255,255,0.2);text-decoration:line-through;">$67</div>
+      </div>
+      <div class="price-note">One-time payment · Instant access · First 20 people only</div>
+      <div class="price-includes">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">The Quiet Sell — Complete Ads Course</div>
+        <div class="price-include-item"><span>✓</span><span>14 core modules across 2 tracks</span></div>
+        <div class="price-include-item"><span>✓</span><span>28+ interactive tools built into the curriculum</span></div>
+        <div class="price-include-item"><span>✓</span><span>3 bonus modules (AI era, buyer psychology, 90-day roadmap)</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin:12px 0 8px;">The Ad Playbook — Included Free</div>
+        <div class="price-include-item"><span>✓</span><span>Plug-and-play ads guide for digital product sellers</span></div>
+        <div class="price-include-item"><span>✓</span><span>Three-campaign system, 11 hook frameworks, launch checklist</span></div>
+        <div class="price-include-item"><span>✓</span><span>Self-paced · Lifetime access · All future updates</span></div>
+      </div>
+      <button class="price-cta" onclick="window.open('https://stan.store/AMdigital_era/p/amcreative--the-quiet-sell','_blank')">Claim Your Founder's Spot — $23 →</button>
+
+      <!-- PRODUCT DESCRIPTION -->
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:4px;padding:20px 22px;margin:20px 0;text-align:left;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">What you're getting</div>
+        <p style="font-size:13px;line-height:1.9;color:rgba(255,255,255,0.55);margin:0;">
+          <strong style="color:rgba(255,255,255,0.82);">AMCREATIVE: The Quiet Sell</strong> is a self-paced, interactive paid ads course for digital product sellers who are posting consistently but not making money. It teaches you the psychology behind why people buy, how to build an offer that converts, and how to run Meta ads with a clear system — even if you have a small audience and no prior ad experience.<br><br>
+          Includes <strong style="color:rgba(255,255,255,0.7);">14 core modules</strong>, 28+ built-in practice tools, and a full bundle with <strong style="color:rgba(255,255,255,0.7);">The Ad Playbook</strong> — a standalone ads reference guide covering creative strategy, targeting, and troubleshooting. One-time payment. Lifetime access.
+        </p>
+      </div>
+
+      <div class="price-guarantee">All sales are final. Questions? Reach out via Instagram <strong>@amdigital_era</strong> before buying.</div>
+    </div>
+  </div>
+</div>
+
+
+<hr class="divider">
+
+<!-- FAQ -->
+<section class="section reveal">
+  <span class="section-label">Questions</span>
+  <h2 class="section-title">Before you decide, <em>the answers.</em></h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do I need prior experience with paid ads? <span class="faq-arrow">↓</span></button>
+      <div class="faq-a">No. Track 1 starts from first principles — it explains how the Meta auction works, what each campaign setting does, and why before it explains how. If you've never run an ad before, you're in the right place. If you have some experience, Track 1 will fill the gaps and Track 2 is where things get strategic.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How much do I need to spend on ads to apply this? <span class="faq-arrow">↓</span></button>
+      <div class="faq-a">The 90-Day Roadmap (Bonus 03) is designed around a starting budget of $10–$20/day — that's $300–$600/month. You can start smaller, but that's the threshold where data comes in fast enough to make good decisions. This course does not require a large budget to learn from — but it does require that you're willing to invest some real spend alongside the course.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">I don't have a digital product yet. Should I still join? <span class="faq-arrow">↓</span></button>
+      <div class="faq-a">Ideally, you have something to sell — even one product, even one that's only made a few organic sales. That said, if you're actively building your offer and you want to understand the ads ecosystem before you launch, this course will give you a significant advantage. You'll be able to build your offer with your conversion funnel in mind, rather than trying to retrofit a funnel to an offer later.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How is this different from YouTube tutorials and free content? <span class="faq-arrow">↓</span></button>
+      <div class="faq-a">Free content gives you fragments. This course gives you a sequence. The difference isn't the individual information — it's the architecture. You learn what to do, in what order, and why the order matters. The 28+ interactive tools built into the curriculum also let you practice the thinking, not just read about it. Most people consuming free content know more than they think they do — they're just missing the structure to act on it.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is this only for Meta (Facebook/Instagram) ads? <span class="faq-arrow">↓</span></button>
+      <div class="faq-a">The strategic framework — buyer psychology, creative testing, funnel diagnostics, attribution — applies across platforms. The specific mechanics and tools covered are Meta-focused because Meta is the most powerful and accessible platform for digital product sellers starting out. If you move to TikTok or Google later, the thinking you build here transfers directly.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What is your refund policy? <span class="faq-arrow">↓</span></button>
+      <div class="faq-a">All sales are final. This is a digital product — once you have access, the value has been delivered. That's why the full course description, module breakdown, and license terms are available to read before you purchase. If you have any questions about whether this is the right fit for you, send a message on Instagram @amdigital_era before buying and I'll answer them honestly.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FINAL CTA -->
+<div class="final-cta reveal">
+  <h2>The system exists.<br>You just need to <em>build it.</em></h2>
+  <p>Every module is designed to give you not just knowledge — but a working mental model you can apply immediately, adapt under pressure, and compound over time.</p>
+  <a href="#pricing" class="btn-primary">Claim Your Spot at $23 →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">AMCREATIVE · The Quiet Sell</div>
+  <div class="footer-note">© 2026 AMCREATIVE · All rights reserved</div>
+</footer>
+
+<script>
+
+// ── THEME TOGGLE ──────────────────────────────────────────────────────────────
+function toggleTheme(){
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+  const btn = document.querySelector('.theme-toggle');
+  btn.textContent = current === 'dark' ? '◑ Dark Mode' : '☀ Light Mode';
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
+function checkReveal(){
+  document.querySelectorAll('.reveal').forEach(el => {
+    if(el.getBoundingClientRect().top < window.innerHeight * 0.9)
+      el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll', checkReveal);
+checkReveal();
+
+// ── FAQ TOGGLE ────────────────────────────────────────────────────────────────
+function toggleFaq(btn){
+  const answer = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  document.querySelectorAll('.faq-q').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+  if(!isOpen){ btn.classList.add('open'); answer.classList.add('open'); }
+}
+</script>
+</body>
+</html>
