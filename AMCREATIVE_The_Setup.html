@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMCREATIVE: The Setup</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --card: #111111;
+    --card2: #161616;
+    --border: rgba(255,255,255,0.07);
+    --gold: #b8965a;
+    --gold-dim: rgba(184,150,90,0.15);
+    --burgundy: #6b1a2a;
+    --burg-dim: rgba(107,26,42,0.2);
+    --text: rgba(255,255,255,0.88);
+    --text2: rgba(255,255,255,0.55);
+    --text3: rgba(255,255,255,0.3);
+    --green: #4caf7a;
+    --green-dim: rgba(76,175,122,0.12);
+    --radius: 4px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-left { display: flex; flex-direction: column; gap: 2px; }
+  .topbar-brand { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--gold); text-transform: uppercase; }
+  .topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; }
+  .topbar-right { display: flex; align-items: center; gap: 10px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); letter-spacing: 0.08em; }
+  .progress-bar { width: 140px; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.5s ease; }
+
+  /* LAYOUT */
+  .layout { display: flex; flex: 1; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 270px;
+    flex-shrink: 0;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    padding: 24px 0 40px;
+    position: sticky;
+    top: 57px;
+    height: calc(100vh - 57px);
+    overflow-y: auto;
+  }
+  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; color: var(--text3); text-transform: uppercase; padding: 0 22px 14px; }
+  .sidebar-item {
+    padding: 11px 22px;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .sidebar-item:hover:not(.locked) { background: rgba(255,255,255,0.025); }
+  .sidebar-item.active { border-left-color: var(--gold); background: var(--gold-dim); }
+  .sidebar-item.done { border-left-color: var(--green); }
+  .sidebar-item.locked { opacity: 0.38; cursor: not-allowed; }
+  .s-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); flex-shrink: 0; margin-top: 2px; min-width: 20px; }
+  .sidebar-item.done .s-num { color: var(--green); }
+  .sidebar-item.locked .s-num { color: var(--text3); }
+  .s-text { font-size: 12px; line-height: 1.5; color: var(--text2); flex: 1; }
+  .sidebar-item.active .s-text { color: var(--text); }
+  .s-check { font-size: 12px; color: var(--green); display: none; flex-shrink: 0; }
+  .sidebar-item.done .s-check { display: block; }
+
+  /* MAIN */
+  .main { flex: 1; padding: 52px 60px; max-width: 840px; }
+
+  /* MODULE */
+  .module { display: none; }
+  .module.active { display: block; }
+
+  .mod-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  .mod-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px, 4vw, 46px); font-weight: 700; line-height: 1.1; margin-bottom: 8px; }
+  .mod-intro { font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 44px; max-width: 600px; }
+
+  /* SECTION */
+  .section { margin-bottom: 44px; padding-bottom: 44px; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .sec-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(107,26,42,0.9); background: var(--burg-dim); padding: 5px 10px; border-radius: var(--radius); margin-bottom: 14px; }
+  .sec-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; margin-bottom: 14px; }
+  .sec-body { font-size: 14px; line-height: 1.85; color: var(--text2); margin-bottom: 16px; }
+  .sec-body strong { color: var(--text); font-weight: 500; }
+
+  /* STEPS */
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 9px; margin: 14px 0; }
+  .step { display: flex; align-items: flex-start; gap: 13px; padding: 12px 14px; background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius); font-size: 13.5px; line-height: 1.6; color: var(--text2); }
+  .step-n { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); flex-shrink: 0; margin-top: 2px; min-width: 22px; }
+  .step strong { color: var(--text); font-weight: 500; }
+
+  /* CALLOUT BOXES */
+  .box { padding: 15px 18px; border-radius: var(--radius); margin: 14px 0; font-size: 13.5px; line-height: 1.7; }
+  .box-lbl { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; opacity: 0.75; }
+  .box.gold { background: var(--gold-dim); border: 1px solid rgba(184,150,90,0.22); color: rgba(200,170,100,0.95); }
+  .box.warn { background: rgba(200,80,50,0.09); border: 1px solid rgba(200,80,50,0.18); color: rgba(220,120,80,0.95); }
+  .box.tip { background: var(--green-dim); border: 1px solid rgba(76,175,122,0.18); color: rgba(76,175,122,0.9); }
+
+  /* VIDEO REC */
+  .vid { display: flex; align-items: flex-start; gap: 13px; padding: 14px 16px; background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius); margin: 14px 0; }
+  .vid-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .vid-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .vid-text strong { color: var(--text); display: block; font-size: 11px; font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; color: var(--gold); }
+  .vid-text em { font-style: normal; color: var(--text); }
+
+  /* METRICS TABLE */
+  .mtable { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  .mtable th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  .mtable td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; line-height: 1.5; }
+  .mtable td:first-child { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold); white-space: nowrap; }
+  .mtable tr:last-child td { border-bottom: none; }
+
+  /* CHECKLIST */
+  .checklist {
+    margin-top: 44px;
+    padding: 26px 26px 22px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+    border-radius: var(--radius);
+  }
+  .cl-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+  .cl-sub { font-size: 13px; color: var(--text2); margin-bottom: 18px; line-height: 1.6; }
+  .cl-prog { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); letter-spacing: 0.06em; margin-bottom: 13px; }
+  .cl-prog span { color: var(--gold); }
+  .cl-items { display: flex; flex-direction: column; gap: 9px; margin-bottom: 22px; }
+  .cl-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .cl-item:hover { border-color: rgba(184,150,90,0.28); }
+  .cl-item.checked { background: var(--green-dim); border-color: rgba(76,175,122,0.22); }
+  .chkbox { width: 18px; height: 18px; border: 1.5px solid var(--text3); border-radius: 2px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.2s; }
+  .cl-item.checked .chkbox { background: var(--green); border-color: var(--green); color: #fff; }
+  .cl-lbl { font-size: 13.5px; line-height: 1.5; color: var(--text2); }
+  .cl-item.checked .cl-lbl { color: rgba(76,175,122,0.88); }
+
+  /* CONTINUE BUTTON */
+  .btn-cont {
+    width: 100%; padding: 14px 24px;
+    background: var(--gold); color: #0a0a0a;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    border: none; border-radius: var(--radius); cursor: pointer; font-weight: 500;
+    opacity: 0.3; pointer-events: none; transition: all 0.2s;
+  }
+  .btn-cont.on { opacity: 1; pointer-events: all; }
+  .btn-cont.on:hover { background: #cfa96e; }
+  .btn-cont.final { background: var(--green); }
+  .btn-cont.final.on:hover { background: #5dc98a; }
+  .btn-note { font-size: 12px; color: var(--text3); text-align: center; margin-top: 9px; }
+
+  /* FINAL SCREEN */
+  .final-screen { display: none; text-align: center; padding: 80px 40px; }
+  .final-screen.active { display: block; }
+  .final-icon { font-size: 56px; margin-bottom: 24px; }
+  .final-h { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 700; line-height: 1.15; margin-bottom: 14px; }
+  .final-p { font-size: 15px; color: var(--text2); line-height: 1.75; max-width: 480px; margin: 0 auto 14px; }
+  .final-cta {
+    display: inline-block; margin-top: 18px;
+    padding: 16px 38px;
+    background: var(--gold); color: #0a0a0a;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    border-radius: var(--radius); text-decoration: none; font-weight: 500;
+  }
+  .final-cta:hover { background: #cfa96e; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-brand">AMCREATIVE</div>
+    <div class="topbar-title">The Setup</div>
+  </div>
+  <div class="topbar-right">
+    <div class="progress-bar"><div class="progress-fill" id="gBar" style="width:0%"></div></div>
+    <span id="gPct">0%</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-label">Course Modules</div>
+  <div class="sidebar-item active" data-m="1" onclick="nav(1)">
+    <div class="s-num">01</div><div class="s-text">Create Your Facebook Page &amp; Accounts</div><div class="s-check">✓</div>
+  </div>
+  <div class="sidebar-item locked" data-m="2" onclick="nav(2)">
+    <div class="s-num">02</div><div class="s-text">Security &amp; Two-Factor Authentication</div><div class="s-check">✓</div>
+  </div>
+  <div class="sidebar-item locked" data-m="3" onclick="nav(3)">
+    <div class="s-num">03</div><div class="s-text">Installing the Meta Pixel</div><div class="s-check">✓</div>
+  </div>
+  <div class="sidebar-item locked" data-m="4" onclick="nav(4)">
+    <div class="s-num">04</div><div class="s-text">Understanding Ads Manager</div><div class="s-check">✓</div>
+  </div>
+  <div class="sidebar-item locked" data-m="5" onclick="nav(5)">
+    <div class="s-num">05</div><div class="s-text">Running Your First Campaign</div><div class="s-check">✓</div>
+  </div>
+  <div class="sidebar-item locked" data-m="6" onclick="nav(6)">
+    <div class="s-num">06</div><div class="s-text">Budgets &amp; Spending</div><div class="s-check">✓</div>
+  </div>
+  <div class="sidebar-item locked" data-m="7" onclick="nav(7)">
+    <div class="s-num">07</div><div class="s-text">Analytics &amp; Key Metrics</div><div class="s-check">✓</div>
+  </div>
+  <div class="sidebar-item locked" data-m="8" onclick="nav(8)">
+    <div class="s-num">08</div><div class="s-text">Troubleshooting &amp; Mistakes</div><div class="s-check">✓</div>
+  </div>
+  <div class="sidebar-item locked" data-m="9" onclick="nav(9)">
+    <div class="s-num">09</div><div class="s-text">What Comes Next</div><div class="s-check">✓</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ═══════════════════════════════════════════
+     MODULE 1 — CREATE YOUR FACEBOOK PAGE & ACCOUNTS
+═══════════════════════════════════════════ -->
+<div class="module active" id="m1">
+  <div class="mod-eyebrow">Module 01 of 09 · Foundation</div>
+  <h1 class="mod-title">Create Your Facebook<br>Page &amp; Accounts</h1>
+  <p class="mod-intro">Before you can run a single ad, you need three things set up: a Facebook Business Page, a Meta Business Suite account, and access to Ads Manager. This module walks you through all three — step by step.</p>
+
+  <div class="section">
+    <div class="sec-tag">1.1 — Personal Facebook Account</div>
+    <h2 class="sec-title">Use Your Real Personal Facebook Account</h2>
+    <p class="sec-body">Everything in Meta's advertising ecosystem is built on top of a personal Facebook account. Your Business Manager, your ad account, your Page — all of it is anchored to one personal profile. This is intentional. Meta uses your personal account to verify that a real person is behind the business.</p>
+    <div class="box warn">
+      <div class="box-lbl">⚠ Do not create a fake or separate account for this</div>
+      A lot of beginners make this mistake — they create a new Facebook account specifically for business because they want to keep things separate or they don't want to use their "real" profile. This almost always backfires. Here's why:
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><strong>Meta flags new accounts immediately.</strong> A freshly created account with no history, no friends, no posts, and no activity trying to run ads triggers Meta's fraud detection within days — sometimes hours. Your ad account gets restricted before you've spent a dollar.</div>
+      <div class="step"><div class="step-n">02</div><strong>Account age matters.</strong> Meta's system trusts older, established accounts. A personal profile with even 6–12 months of normal activity has far more credibility than a blank account created yesterday. The older your account, the less friction you'll face getting approved and scaling.</div>
+      <div class="step"><div class="step-n">03</div><strong>Your personal account is the master key.</strong> If Meta restricts or disables it, you lose access to everything attached to it — your Business Manager, your Page, your ad account, your pixel data, your audiences. Everything. Protect it.</div>
+      <div class="step"><div class="step-n">04</div><strong>You don't have to show your personal life.</strong> If privacy is your concern: go to your Facebook profile → Settings → Privacy → adjust who can see your posts, friends list, and personal information. You can lock down your personal profile completely while still using it to run ads. Meta only cares that you exist — not what you post.</div>
+    </div>
+    <div class="box gold">
+      <div class="box-lbl">💡 Already have an account?</div>
+      You're good. Move on to 1.2. If your account is older and established, that's an advantage — don't throw it away by creating something new.
+    </div>
+    <div class="box tip">
+      <div class="box-lbl">✓ No account yet?</div>
+      Go to <strong>facebook.com</strong> → click <strong>Create new account</strong> → fill in your real name, email or phone, password, birthday, and gender → click <strong>Sign Up</strong> → verify your email or phone. Use your real information. Then spend a few days using the account normally before moving to ads — like a page or two, post something, let it breathe. Don't rush straight from account creation to running ads.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">1.2 — Meta Business Manager</div>
+    <h2 class="sec-title">Create Your Business Manager Account</h2>
+    <p class="sec-body">Business Manager is the hub that holds your ad account, pages, pixels, and team access. Everything lives here. This is not the same as your personal profile or your Facebook Page — it's a separate dashboard built for advertisers.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Go to <strong>business.facebook.com</strong></div>
+      <div class="step"><div class="step-n">02</div>Click <strong>Create Account</strong></div>
+      <div class="step"><div class="step-n">03</div>Enter your <strong>business name</strong> (this is internal — customers won't see it)</div>
+      <div class="step"><div class="step-n">04</div>Enter your <strong>name</strong> and <strong>business email address</strong></div>
+      <div class="step"><div class="step-n">05</div>Click <strong>Submit</strong></div>
+      <div class="step"><div class="step-n">06</div>Check your email and <strong>confirm the verification link</strong></div>
+    </div>
+    <div class="box gold">
+      <div class="box-lbl">💡 Bookmark this page</div>
+      Once you're in, you'll land on the Business Manager dashboard. Bookmark it — you'll come back to it constantly. Running ads directly from a personal profile is risky and limits your options. Business Manager is where everything lives.
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"how to set up Meta Business Manager for beginners 2026"</em> — look for a video that walks through the full dashboard and account setup</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">1.3 — Facebook Business Page</div>
+    <h2 class="sec-title">Create Your Facebook Page</h2>
+    <p class="sec-body">Your Facebook Page is the public identity your ads run from. Every ad needs a Page attached to it. Create it inside Business Manager so it's linked to your ad account from the start.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Inside Business Manager, go to <strong>Business Settings</strong> (gear icon, top left)</div>
+      <div class="step"><div class="step-n">02</div>In the left menu, click <strong>Accounts → Pages</strong></div>
+      <div class="step"><div class="step-n">03</div>Click <strong>Add → Create a New Page</strong></div>
+      <div class="step"><div class="step-n">04</div>Choose <strong>Business or Brand</strong></div>
+      <div class="step"><div class="step-n">05</div>Enter your <strong>Page name</strong> (your brand or business name)</div>
+      <div class="step"><div class="step-n">06</div>Select a <strong>Category</strong> — start typing your industry (e.g. "Digital Products", "Online Course", "Health &amp; Wellness")</div>
+      <div class="step"><div class="step-n">07</div>Add your address and phone number (optional but recommended)</div>
+      <div class="step"><div class="step-n">08</div>Click <strong>Create Page</strong></div>
+      <div class="step"><div class="step-n">09</div>Upload a <strong>profile picture</strong> (your logo works) and a <strong>cover photo</strong></div>
+      <div class="step"><div class="step-n">10</div>Fill in the <strong>About section</strong> with a short description of your business</div>
+    </div>
+    <div class="box gold">
+      <div class="box-lbl">💡 Complete your Page</div>
+      Complete as much of the Page as possible. Meta's review systems are more favorable toward Pages that look like real, active businesses. A half-empty Page raises flags.
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"how to create a Facebook Business Page inside Business Manager 2026"</em> — make sure the video shows creation from inside Business Manager, not from a personal profile</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">1.4 — Create Your Ad Account</div>
+    <h2 class="sec-title">Where Your Campaigns, Ads, and Billing Live</h2>
+    <p class="sec-body">The ad account is the actual account where your ads, billing, and campaigns live. It's separate from your Business Manager account and your Page — think of Business Manager as the folder, and your ad account as the tool inside it.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>In Business Manager, go to <strong>Business Settings</strong></div>
+      <div class="step"><div class="step-n">02</div>In the left menu, click <strong>Accounts → Ad Accounts</strong></div>
+      <div class="step"><div class="step-n">03</div>Click <strong>Add → Create a New Ad Account</strong></div>
+      <div class="step"><div class="step-n">04</div>Name your ad account (e.g. "[Your Brand] - Main")</div>
+      <div class="step"><div class="step-n">05</div>Set your <strong>time zone</strong> and <strong>currency</strong> — <strong>these cannot be changed later</strong>, so double-check before you continue</div>
+      <div class="step"><div class="step-n">06</div>Choose <strong>My Business</strong> when asked who the ad account is for</div>
+      <div class="step"><div class="step-n">07</div>Click <strong>Create</strong></div>
+      <div class="step"><div class="step-n">08</div>Assign yourself as an <strong>Admin</strong> on the ad account</div>
+    </div>
+    <div class="box warn">
+      <div class="box-lbl">⚠ Heads up</div>
+      New ad accounts start with a low daily spending limit (often around $50/day). This increases automatically as you spend and build trust with Meta. Don't panic if you can't spend more early on — it's normal.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">1.5 — Add Your Payment Method</div>
+    <h2 class="sec-title">Add a Card Before You Try to Run Anything</h2>
+    <p class="sec-body">No payment method means no ads. Add this before you try to publish anything — Meta will block your campaign if there's no card on file.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>In Business Manager, go to <strong>Business Settings → Payments</strong> (under the Billing section in the left sidebar)</div>
+      <div class="step"><div class="step-n">02</div>Or go directly: <strong>Ads Manager → Billing → Payment Settings</strong></div>
+      <div class="step"><div class="step-n">03</div>Click <strong>Add Payment Method</strong></div>
+      <div class="step"><div class="step-n">04</div>Select <strong>Credit or Debit Card</strong></div>
+      <div class="step"><div class="step-n">05</div>Enter your card number, expiration date, CVV, and billing address</div>
+      <div class="step"><div class="step-n">06</div>Click <strong>Save</strong></div>
+    </div>
+    <div class="box gold">
+      <div class="box-lbl">💡 Pro tips</div>
+      Use a card with a high enough limit — if your card declines, Meta can pause your entire account. Consider using a dedicated business card to keep ad spend separate from personal expenses. You can also add a backup payment method in case your primary card has issues.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">1.6 — Link Your Instagram Account</div>
+    <h2 class="sec-title">Connect Instagram to Run Ads Across Both Platforms</h2>
+    <p class="sec-body">Linking your Instagram lets you run ads on Instagram and use your Instagram handle as the ad identity. If you're selling to people on Instagram, this step is not optional.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Open your Instagram app → go to <strong>Settings → Account → Switch to Professional Account → Business</strong> → connect it to your Facebook Page when prompted</div>
+      <div class="step"><div class="step-n">02</div>In Business Manager, go to <strong>Business Settings</strong></div>
+      <div class="step"><div class="step-n">03</div>Click <strong>Accounts → Instagram Accounts</strong></div>
+      <div class="step"><div class="step-n">04</div>Click <strong>Add → Connect Your Instagram Account</strong></div>
+      <div class="step"><div class="step-n">05</div>Log in with your Instagram credentials and confirm the connection</div>
+      <div class="step"><div class="step-n">06</div>Assign the Instagram account to your Ad Account — click the account → toggle your ad account on</div>
+    </div>
+    <div class="box warn">
+      <div class="box-lbl">⚠ Already connected elsewhere?</div>
+      If your Instagram was previously connected to a different Facebook Page, you'll need to disconnect it there first before you can connect it here.
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"how to link Instagram to Facebook Business Manager 2026"</em> — look for a video showing the connection through Business Settings, not through the personal profile</div>
+    </div>
+  </div>
+
+  <div class="checklist" id="cl1">
+    <div class="cl-title">Before You Continue →</div>
+    <div class="cl-sub">Check off each item only when you've actually done it. This module locks until every box is ticked.</div>
+    <div class="cl-prog">Completed: <span id="p1">0</span> / 8</div>
+    <div class="cl-items" id="i1">
+      <div class="cl-item" onclick="tick(this,1)"><div class="chkbox"></div><div class="cl-lbl">I have a personal Facebook account set up and verified with my real identity</div></div>
+      <div class="cl-item" onclick="tick(this,1)"><div class="chkbox"></div><div class="cl-lbl">I've created my Meta Business Manager account and confirmed my email</div></div>
+      <div class="cl-item" onclick="tick(this,1)"><div class="chkbox"></div><div class="cl-lbl">I've created my Facebook Business Page inside Business Manager with a name, category, profile photo, and bio</div></div>
+      <div class="cl-item" onclick="tick(this,1)"><div class="chkbox"></div><div class="cl-lbl">I've created my Ad Account with the correct time zone and currency set</div></div>
+      <div class="cl-item" onclick="tick(this,1)"><div class="chkbox"></div><div class="cl-lbl">I've added a payment method (card) to my ad account</div></div>
+      <div class="cl-item" onclick="tick(this,1)"><div class="chkbox"></div><div class="cl-lbl">I've assigned myself as Admin on the ad account</div></div>
+      <div class="cl-item" onclick="tick(this,1)"><div class="chkbox"></div><div class="cl-lbl">I've connected my Instagram account to Business Manager and assigned it to my ad account</div></div>
+      <div class="cl-item" onclick="tick(this,1)"><div class="chkbox"></div><div class="cl-lbl">I can access Ads Manager at adsmanager.facebook.com and see my ad account dashboard</div></div>
+    </div>
+    <button class="btn-cont" id="b1" onclick="done(1)">Mark Complete &amp; Continue →</button>
+    <div class="btn-note" id="n1">Complete all items above to unlock the next module</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 2 — SECURITY & 2FA
+═══════════════════════════════════════════ -->
+<div class="module" id="m2">
+  <div class="mod-eyebrow">Module 02 of 09 · Security</div>
+  <h1 class="mod-title">Security &amp; Two-Factor<br>Authentication</h1>
+  <p class="mod-intro">Ad accounts get hacked every single day. People lose months of work, thousands in ad spend, and their entire business presence in one attack. This module takes 10 minutes and protects everything you're about to build.</p>
+
+  <div class="section">
+    <div class="sec-tag">2.1 — Why This Matters</div>
+    <h2 class="sec-title">The Risk Is Real</h2>
+    <p class="sec-body">Meta ad accounts are a target for hackers because they have payment methods attached. If someone gets into your account, they can run their own ads on your card before you even notice. Meta can take days or weeks to resolve unauthorized access — and during that time your account may be disabled entirely.</p>
+    <div class="box warn">
+      <div class="box-lbl">⚠ This is not optional</div>
+      Two-factor authentication (2FA) is the single most important security step you can take. Do not skip this module. Do not come back to it later. Do it now, before you spend a single dollar.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">2.2 — Enable 2FA on Your Personal Facebook Account</div>
+    <h2 class="sec-title">Securing Your Personal Profile First</h2>
+    <p class="sec-body">Your personal Facebook account is the master key to everything — your Page, your Business Suite, your Ads Manager. Secure it first.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Go to your Facebook profile → click the <strong>menu icon (≡)</strong> → <strong>Settings &amp; Privacy</strong> → <strong>Settings</strong></div>
+      <div class="step"><div class="step-n">02</div>Click <strong>Security and Login</strong> (on desktop) or <strong>Password and Security</strong> (on mobile)</div>
+      <div class="step"><div class="step-n">03</div>Find <strong>Two-Factor Authentication</strong> → click <strong>Edit</strong> → click <strong>Get Started</strong></div>
+      <div class="step"><div class="step-n">04</div>Choose <strong>Authentication App</strong> — this is the most reliable method. Download one if you don't have it:<br>— <strong>Google Authenticator</strong> (free, iOS &amp; Android)<br>— <strong>Microsoft Authenticator</strong> (free, iOS &amp; Android)<br>— <strong>Authy</strong> (free, iOS &amp; Android — supports cloud backup, recommended)</div>
+      <div class="step"><div class="step-n">05</div>Open the authenticator app and <strong>scan the QR code</strong> Facebook shows you</div>
+      <div class="step"><div class="step-n">06</div>Enter the <strong>6-digit code</strong> the app generates to confirm it's connected</div>
+      <div class="step"><div class="step-n">07</div>Save your <strong>recovery codes</strong> somewhere safe — screenshot them or write them down. These are your backup if you ever lose your phone. If you don't save them now you will regret it later</div>
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"how to set up two factor authentication Facebook 2026"</em> — look for a short walkthrough that shows the exact settings screens</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">2.3 — Enable 2FA on Meta Business Suite</div>
+    <h2 class="sec-title">Securing Your Business Account</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Go to <strong>business.facebook.com</strong> → click <strong>Settings</strong> (gear icon, bottom left)</div>
+      <div class="step"><div class="step-n">02</div>Click <strong>Security Center</strong> in the left menu</div>
+      <div class="step"><div class="step-n">03</div>Under <strong>Two-factor authentication</strong>, set the requirement to <strong>Required for all</strong> — this means every person with access to your Business Suite must have 2FA enabled</div>
+      <div class="step"><div class="step-n">04</div>Click <strong>Save</strong></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">2.4 — Account Protection Rules</div>
+    <h2 class="sec-title">Rules to Live By</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">✓</div><strong>Never share your login credentials</strong> with anyone — not an assistant, not a freelancer, not a course creator asking you to "show your screen"</div>
+      <div class="step"><div class="step-n">✓</div><strong>Never click suspicious links</strong> in emails or DMs claiming to be from Meta. Meta will never DM you on Instagram asking for your password or to "verify your account"</div>
+      <div class="step"><div class="step-n">✓</div><strong>Add a backup admin</strong> to your Business Suite — a trusted person who can help you recover access if you ever get locked out. Go to Business Settings → People → Add people</div>
+      <div class="step"><div class="step-n">✓</div><strong>Check your active sessions</strong> regularly — Security and Login → Where You're Logged In. Remove any devices you don't recognise</div>
+    </div>
+    <div class="box gold">
+      <div class="box-lbl">💡 If you ever get hacked</div>
+      Go immediately to <strong>facebook.com/hacked</strong> — Meta's official recovery tool. Change your password, remove unrecognised devices, and report the breach. Act fast — the sooner you report it, the better.
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"how to protect your Facebook ads account from hackers 2026"</em> — a good video will cover 2FA, suspicious activity, and what to do if you lose access</div>
+    </div>
+  </div>
+
+  <div class="checklist" id="cl2">
+    <div class="cl-title">Before You Continue →</div>
+    <div class="cl-sub">These are not optional. Every box needs to be ticked before you move on.</div>
+    <div class="cl-prog">Completed: <span id="p2">0</span> / 4</div>
+    <div class="cl-items" id="i2">
+      <div class="cl-item" onclick="tick(this,2)"><div class="chkbox"></div><div class="cl-lbl">I've enabled Two-Factor Authentication on my personal Facebook account</div></div>
+      <div class="cl-item" onclick="tick(this,2)"><div class="chkbox"></div><div class="cl-lbl">I've enabled 2FA on my Meta Business Manager (Security Center) and set it to Required for Everyone</div></div>
+      <div class="cl-item" onclick="tick(this,2)"><div class="chkbox"></div><div class="cl-lbl">I've saved my backup codes somewhere safe (not just on my phone)</div></div>
+      <div class="cl-item" onclick="tick(this,2)"><div class="chkbox"></div><div class="cl-lbl">I understand how phishing works and I will never share my login or click suspicious "Meta" links</div></div>
+    </div>
+    <button class="btn-cont" id="b2" onclick="done(2)">Mark Complete &amp; Continue →</button>
+    <div class="btn-note" id="n2">Complete all items above to unlock the next module</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 3 — INSTALLING THE META PIXEL
+═══════════════════════════════════════════ -->
+<div class="module" id="m3">
+  <div class="mod-eyebrow">Module 03 of 09 · Tracking</div>
+  <h1 class="mod-title">Installing the<br>Meta Pixel</h1>
+  <p class="mod-intro">The Pixel is a tiny piece of code that connects your website to Meta. Without it, Meta can't track who's buying, can't optimise for purchases, and can't learn who your best customers are. Install it before you spend a single dollar on ads.</p>
+
+  <div class="section">
+    <div class="sec-tag">3.1 — What Is the Pixel?</div>
+    <h2 class="sec-title">Why You Can't Run Ads Without It</h2>
+    <p class="sec-body">When someone visits your website, the Pixel fires and sends information back to Meta — things like "someone viewed this page," "someone added to cart," or "someone made a purchase." Meta uses this data to find more people like your buyers and optimise who sees your ads.</p>
+    <div class="box gold">
+      <div class="box-lbl">💡 Simple version</div>
+      The Pixel is how Meta knows your ads are working. Without it, you're driving traffic blind — you'll see link clicks but you'll never know if those clicks turned into sales.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">3.2 — Create Your Pixel</div>
+    <h2 class="sec-title">Setting Up the Pixel in Business Manager</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>In Business Manager, go to <strong>Business Settings</strong></div>
+      <div class="step"><div class="step-n">02</div>Click <strong>Data Sources → Datasets</strong> (this is what Meta now calls Pixels)</div>
+      <div class="step"><div class="step-n">03</div>Click <strong>Add → Create a New Dataset</strong></div>
+      <div class="step"><div class="step-n">04</div>Name it using your brand name (e.g. "AMCREATIVE Pixel") — you only ever need one Pixel per business</div>
+      <div class="step"><div class="step-n">05</div>Click <strong>Create</strong></div>
+      <div class="step"><div class="step-n">06</div>Connect it to your <strong>ad account</strong> when prompted</div>
+      <div class="step"><div class="step-n">07</div>Your <strong>Pixel ID</strong> is the 15–16 digit number shown in the dataset — copy and save this, you'll need it in the next step</div>
+    </div>
+    <p class="sec-body" style="margin-top:14px;">You now have a Pixel. The next step is installing it on your website or store.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">3.3 — Install the Pixel on Your Store or Website</div>
+    <h2 class="sec-title">Connecting Pixel to Where You Sell</h2>
+    <p class="sec-body">How you install it depends on where your sales page lives. Find your platform below:</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">Stan Store</div>Go to <strong>Stan Store dashboard → Settings → Integrations → Meta Pixel</strong> → paste your <strong>Pixel ID</strong> (a 15-16 digit number from Events Manager) → save</div>
+      <div class="step"><div class="step-n">Shopify</div>Go to <strong>Shopify Admin → Sales Channels → Facebook &amp; Instagram</strong> → connect your Meta account → Shopify installs the Pixel automatically</div>
+      <div class="step"><div class="step-n">WordPress</div>Install the free <strong>PixelYourSite</strong> plugin → activate it → paste your Pixel ID → save settings</div>
+      <div class="step"><div class="step-n">Custom site</div>In Events Manager, click <strong>Install code manually</strong> → copy the base code → paste it into the <strong>&lt;head&gt;</strong> section of every page on your site</div>
+      <div class="step"><div class="step-n">Linktree / other link pages</div>Go to your platform's settings and look for "Pixel" or "Tracking" — most modern link-in-bio tools support Meta Pixel natively</div>
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"how to install Meta Pixel on Stan Store 2026"</em> or <em>"how to install Meta Pixel 2026"</em> — search for your specific platform to get a visual walkthrough</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">3.4 — Verify Your Pixel Is Working</div>
+    <h2 class="sec-title">Using Meta Pixel Helper</h2>
+    <p class="sec-body">Before you run any ads, confirm your Pixel is actually firing. Don't assume — verify.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Open <strong>Google Chrome</strong> and go to the Chrome Web Store → search <strong>"Meta Pixel Helper"</strong> → install the free extension</div>
+      <div class="step"><div class="step-n">02</div>Visit your website or Stan Store page in Chrome</div>
+      <div class="step"><div class="step-n">03</div>Click the <strong>Pixel Helper icon</strong> in your browser toolbar (it looks like a small "&lt;/&gt;" symbol)</div>
+      <div class="step"><div class="step-n">04</div>You should see your <strong>Pixel ID</strong> listed with a green checkmark and "PageView" event — this means it's working correctly</div>
+      <div class="step"><div class="step-n">05</div>If you see a red error or nothing at all — the Pixel isn't installed correctly. Go back to step 3.3 and reinstall</div>
+    </div>
+    <div class="box tip">
+      <div class="box-lbl">✓ What you're looking for</div>
+      Green checkmark + your Pixel ID + "PageView" = installed and firing correctly. That's all you need to confirm before moving on.
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"Meta Pixel Helper tutorial 2026"</em> — a short video showing what a correctly installed Pixel looks like vs. an error</div>
+    </div>
+  </div>
+
+  <div class="checklist" id="cl3">
+    <div class="cl-title">Before You Continue →</div>
+    <div class="cl-sub">Don't move on until your Pixel is verified and firing. This is too important to skip.</div>
+    <div class="cl-prog">Completed: <span id="p3">0</span> / 4</div>
+    <div class="cl-items" id="i3">
+      <div class="cl-item" onclick="tick(this,3)"><div class="chkbox"></div><div class="cl-lbl">I've created my Meta Pixel in Business Manager (Data Sources → Datasets) and have my Pixel ID</div></div>
+      <div class="cl-item" onclick="tick(this,3)"><div class="chkbox"></div><div class="cl-lbl">I've installed the Pixel on my website or store (Stan Store, Shopify, WordPress, or custom site)</div></div>
+      <div class="cl-item" onclick="tick(this,3)"><div class="chkbox"></div><div class="cl-lbl">I've installed Meta Pixel Helper in Chrome and confirmed my Pixel is showing a green checkmark</div></div>
+      <div class="cl-item" onclick="tick(this,3)"><div class="chkbox"></div><div class="cl-lbl">I understand that without the Pixel, Meta cannot track or optimise for purchases</div></div>
+    </div>
+    <button class="btn-cont" id="b3" onclick="done(3)">Mark Complete &amp; Continue →</button>
+    <div class="btn-note" id="n3">Complete all items above to unlock the next module</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 4 — UNDERSTANDING ADS MANAGER
+═══════════════════════════════════════════ -->
+<div class="module" id="m4">
+  <div class="mod-eyebrow">Module 04 of 09 · Foundations</div>
+  <h1 class="mod-title">Understanding<br>Ads Manager</h1>
+  <p class="mod-intro">Ads Manager can look overwhelming the first time you open it. This module gives you a clear map so nothing surprises you — before you create your first campaign.</p>
+
+  <div class="section">
+    <div class="sec-tag">4.1 — The Three-Level Structure</div>
+    <h2 class="sec-title">Campaign → Ad Set → Ad</h2>
+    <p class="sec-body">Every ad you run lives inside a three-level hierarchy. Understanding this is the most important thing you can learn before you start.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">Campaign</div><strong>Your goal.</strong> What do you want Meta to optimise for? (Sales, Traffic, Awareness, etc.) One campaign can contain multiple ad sets</div>
+      <div class="step"><div class="step-n">Ad Set</div><strong>Your who and where.</strong> This is where you define your audience, your placement (where the ad shows), and your budget. One ad set can contain multiple ads</div>
+      <div class="step"><div class="step-n">Ad</div><strong>Your creative.</strong> The actual image or video and copy that people see. This is what gets shown to your audience</div>
+    </div>
+    <div class="box gold">
+      <div class="box-lbl">💡 Think of it like this</div>
+      Campaign = the mission (I want to get sales)<br>
+      Ad Set = the plan (I'm going to target women 25-40 interested in digital products, spending $15/day)<br>
+      Ad = the execution (here's the video and copy they'll see)
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">4.2 — Key Vocabulary</div>
+    <h2 class="sec-title">Words You'll See Everywhere</h2>
+    <p class="sec-body">You don't need to memorise all of these right now — just read through so nothing looks foreign when you're in campaign setup.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">Objective</div>The goal of your campaign. For selling products, always choose <strong>Sales</strong></div>
+      <div class="step"><div class="step-n">Audience</div>Who sees your ad — defined by location, age, gender, interests, or Meta's AI (Advantage+)</div>
+      <div class="step"><div class="step-n">Placement</div>Where your ad appears — Facebook Feed, Instagram Feed, Reels, Stories, etc.</div>
+      <div class="step"><div class="step-n">Creative</div>Your image or video — the visual part of your ad</div>
+      <div class="step"><div class="step-n">Copy</div>The text in your ad — Primary Text (above creative) and Headline (below creative)</div>
+      <div class="step"><div class="step-n">Budget</div>How much you're willing to spend — set at campaign or ad set level</div>
+      <div class="step"><div class="step-n">Impression</div>One time your ad was shown to someone (same person can generate multiple impressions)</div>
+      <div class="step"><div class="step-n">Reach</div>The number of unique people who saw your ad</div>
+      <div class="step"><div class="step-n">Click</div>Someone clicked your ad link</div>
+      <div class="step"><div class="step-n">Conversion</div>Someone completed your goal — e.g., made a purchase</div>
+      <div class="step"><div class="step-n">Learning Phase</div>The period when Meta's algorithm is figuring out who's most likely to convert. Usually the first 7–14 days</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">4.3 — Navigating the Dashboard</div>
+    <h2 class="sec-title">Finding Your Way Around</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">Campaigns tab</div>Overview of all your campaigns — status (active/paused), budget, results. This is your home base</div>
+      <div class="step"><div class="step-n">Ad Sets tab</div>Drill into audience settings, placements, and scheduling for each ad set</div>
+      <div class="step"><div class="step-n">Ads tab</div>See each individual ad's performance — which creative is getting clicks, which isn't</div>
+      <div class="step"><div class="step-n">Columns button</div>Customise what data shows in your table — you'll do this in the Analytics module</div>
+      <div class="step"><div class="step-n">Filters &amp; Date Range</div>Top right of the screen — use this to look at specific time periods (last 7 days, last 30 days, etc.)</div>
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"Facebook Ads Manager dashboard tour for beginners 2026"</em> — look for a video that opens Ads Manager and walks through every section on screen so you can follow along</div>
+    </div>
+  </div>
+
+  <div class="checklist" id="cl4">
+    <div class="cl-title">Before You Continue →</div>
+    <div class="cl-sub">Make sure you can answer all of these from memory before moving to your first campaign.</div>
+    <div class="cl-prog">Completed: <span id="p4">0</span> / 4</div>
+    <div class="cl-items" id="i4">
+      <div class="cl-item" onclick="tick(this,4)"><div class="chkbox"></div><div class="cl-lbl">I understand the Campaign → Ad Set → Ad structure and what each level controls</div></div>
+      <div class="cl-item" onclick="tick(this,4)"><div class="chkbox"></div><div class="cl-lbl">I can define: objective, audience, placement, creative, copy, budget, impression, reach, click, and conversion</div></div>
+      <div class="cl-item" onclick="tick(this,4)"><div class="chkbox"></div><div class="cl-lbl">I've opened Ads Manager and can navigate between the Campaigns, Ad Sets, and Ads tabs</div></div>
+      <div class="cl-item" onclick="tick(this,4)"><div class="chkbox"></div><div class="cl-lbl">I know what the Learning Phase is and approximately how long it takes</div></div>
+    </div>
+    <button class="btn-cont" id="b4" onclick="done(4)">Mark Complete &amp; Continue →</button>
+    <div class="btn-note" id="n4">Complete all items above to unlock the next module</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 5 — RUNNING YOUR FIRST CAMPAIGN
+═══════════════════════════════════════════ -->
+<div class="module" id="m5">
+  <div class="mod-eyebrow">Module 05 of 09 · Launch</div>
+  <h1 class="mod-title">Running Your<br>First Campaign</h1>
+  <p class="mod-intro">You have your accounts, your security, your Pixel, and your dashboard orientation. Now it's time to build and publish your first ad — step by step, click by click.</p>
+
+  <div class="section">
+    <div class="sec-tag">5.1 — Campaign Setup</div>
+    <h2 class="sec-title">Creating the Campaign</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>In Ads Manager, click <strong>+ Create</strong> (top left)</div>
+      <div class="step"><div class="step-n">02</div>Choose your objective: select <strong>Sales</strong></div>
+      <div class="step"><div class="step-n">03</div>Name your campaign clearly — use a format like: <em>ProductName · Sales · Month/Year</em> (e.g. "TheSetup · Sales · May2026")</div>
+      <div class="step"><div class="step-n">04</div>Leave <strong>Campaign Budget Optimization (CBO)</strong> turned on — it lets Meta split your budget between ad sets automatically</div>
+      <div class="step"><div class="step-n">05</div>Set your <strong>daily budget</strong> — start with $10–$20/day</div>
+      <div class="step"><div class="step-n">06</div>Click <strong>Next</strong></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">5.2 — Ad Set Setup</div>
+    <h2 class="sec-title">Defining Who Sees Your Ad</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Under <strong>Conversion event</strong>, select <strong>Purchase</strong> — this links to your Pixel and tells Meta you want sales</div>
+      <div class="step"><div class="step-n">02</div>For audience: choose <strong>Advantage+ Audience</strong> — Meta's AI will find your buyers. Don't overthink targeting at this stage</div>
+      <div class="step"><div class="step-n">03</div>For placements: choose <strong>Advantage+ Placements</strong> — Meta decides where to show your ad based on performance</div>
+      <div class="step"><div class="step-n">04</div>Set your start date and confirm everything looks correct → click <strong>Next</strong></div>
+    </div>
+    <div class="box warn">
+      <div class="box-lbl">⚠ Don't narrow your audience</div>
+      Resist the urge to add lots of interests, age restrictions, or location filters. The more you restrict, the less room Meta has to find your actual buyers. Start broad.
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"which Facebook ad objective should I choose 2026"</em> and <em>"Advantage+ audience vs interest targeting 2026"</em></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">5.3 — Ad Setup</div>
+    <h2 class="sec-title">Building the Actual Ad</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Select your <strong>Facebook Page</strong> and <strong>Instagram account</strong></div>
+      <div class="step"><div class="step-n">02</div>Choose your <strong>ad format</strong>: Single Image or Single Video (start with one of these — Carousel comes later)</div>
+      <div class="step"><div class="step-n">03</div>Upload your <strong>creative</strong> — your image or video file</div>
+      <div class="step"><div class="step-n">04</div>Write your <strong>Primary Text</strong> — the body copy above the creative. Keep it under 125 characters if possible</div>
+      <div class="step"><div class="step-n">05</div>Write your <strong>Headline</strong> — the bold text below the creative. Make it specific: what does the person get?</div>
+      <div class="step"><div class="step-n">06</div>Add your <strong>website URL</strong> — the exact link where buyers land</div>
+      <div class="step"><div class="step-n">07</div>Choose a <strong>CTA button</strong>: use <em>Shop Now</em> or <em>Learn More</em></div>
+      <div class="step"><div class="step-n">08</div>Click <strong>Preview</strong> and check it on Feed, Stories, and Reels</div>
+      <div class="step"><div class="step-n">09</div>Click <strong>Publish</strong></div>
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"how to create your first Facebook ad step by step 2026"</em> — Ben Heath's channel is the most beginner-friendly and stays updated</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">5.4 — After You Publish</div>
+    <h2 class="sec-title">What to Expect in the First 72 Hours</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Your ad enters <strong>Review</strong> — Meta checks it against their ad policies. Usually takes a few minutes, can take up to 24 hours</div>
+      <div class="step"><div class="step-n">02</div>Once approved, it enters the <strong>Learning Phase</strong> — Meta's algorithm is figuring out who is most likely to buy. Performance fluctuates. This is completely normal</div>
+      <div class="step"><div class="step-n">03</div>Meta needs roughly <strong>50 purchase events per week</strong> to fully exit the learning phase</div>
+    </div>
+    <div class="box warn">
+      <div class="box-lbl">🚫 Do NOT touch your ad for at least 3–5 days</div>
+      No edits. No budget changes. No pausing and restarting. Every change resets the learning phase and you lose all the data Meta has collected so far. Wait.
+    </div>
+  </div>
+
+  <div class="checklist" id="cl5">
+    <div class="cl-title">Before You Continue →</div>
+    <div class="cl-sub">Check these off only once you've actually done them.</div>
+    <div class="cl-prog">Completed: <span id="p5">0</span> / 6</div>
+    <div class="cl-items" id="i5">
+      <div class="cl-item" onclick="tick(this,5)"><div class="chkbox"></div><div class="cl-lbl">I've created a campaign with the Sales objective and named it clearly</div></div>
+      <div class="cl-item" onclick="tick(this,5)"><div class="chkbox"></div><div class="cl-lbl">I've set up my Ad Set with Purchase as the conversion event and Advantage+ Audience</div></div>
+      <div class="cl-item" onclick="tick(this,5)"><div class="chkbox"></div><div class="cl-lbl">I've uploaded my creative and written my Primary Text and Headline</div></div>
+      <div class="cl-item" onclick="tick(this,5)"><div class="chkbox"></div><div class="cl-lbl">I've added my website URL and CTA button, previewed the ad, and hit Publish</div></div>
+      <div class="cl-item" onclick="tick(this,5)"><div class="chkbox"></div><div class="cl-lbl">My ad has been approved and is in the Learning Phase</div></div>
+      <div class="cl-item" onclick="tick(this,5)"><div class="chkbox"></div><div class="cl-lbl">I will NOT edit, pause, or change my budget for at least 3–5 days</div></div>
+    </div>
+    <button class="btn-cont" id="b5" onclick="done(5)">Mark Complete &amp; Continue →</button>
+    <div class="btn-note" id="n5">Complete all items above to unlock the next module</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 6 — BUDGETS & SPENDING
+═══════════════════════════════════════════ -->
+<div class="module" id="m6">
+  <div class="mod-eyebrow">Module 06 of 09 · Budget</div>
+  <h1 class="mod-title">Budgets &amp;<br>Spending</h1>
+  <p class="mod-intro">How much to spend, how Meta charges you, and the golden rules for scaling without blowing your budget or breaking what's already working.</p>
+
+  <div class="section">
+    <div class="sec-tag">6.1 — How Much Should a Beginner Spend?</div>
+    <h2 class="sec-title">Your Starting Budget</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">→</div>Start with <strong>$10–$20/day per ad set</strong> — enough signal for Meta to learn without burning through money too fast</div>
+      <div class="step"><div class="step-n">→</div>Plan to spend <strong>2–3× your product price before judging results</strong>. Selling a $17 product? Spend $34–$51 before deciding if the ad works</div>
+      <div class="step"><div class="step-n">→</div>Think of early spend as <strong>learning budget</strong> — you're buying information about your audience, not just paying for sales</div>
+    </div>
+    <div class="box gold">
+      <div class="box-lbl">💡 The mindset shift</div>
+      Every dollar you spend gives Meta more data about who buys from you. Even a campaign that doesn't profit in week one is teaching Meta's algorithm something valuable. Beginners who quit after $20 never get to the good part.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">6.2 — Daily vs. Lifetime Budget</div>
+    <h2 class="sec-title">Which One to Use</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">Daily</div><strong>Use this.</strong> Meta spends roughly this amount each day. Simple to control, easy to adjust</div>
+      <div class="step"><div class="step-n">Lifetime</div>You set a total and Meta spreads it over a date range. Harder to predict day-to-day — come back to this once you're more experienced</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">6.3 — How Meta Charges You</div>
+    <h2 class="sec-title">Understanding Your Billing</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Meta charges when you hit a <strong>billing threshold</strong> OR at the end of the month — whichever comes first</div>
+      <div class="step"><div class="step-n">02</div>Check your charges anytime: <strong>Billing → Payment Activity</strong> in Ads Manager</div>
+      <div class="step"><div class="step-n">03</div>Set an <strong>Account Spending Limit</strong> before you run ads — this caps your total spend and is your safety net against accidental overspending. Find it in <strong>Billing → Payment Settings</strong></div>
+    </div>
+    <div class="box warn">
+      <div class="box-lbl">⚠ Do this right now</div>
+      Set your Account Spending Limit before your ad goes live. This is the number one thing beginners forget — and then they panic when they see a charge they weren't expecting.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">6.4 — Scaling Your Budget</div>
+    <h2 class="sec-title">When and How to Spend More</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Only increase budget after <strong>3+ days of stable, consistent results</strong> — not after one good day</div>
+      <div class="step"><div class="step-n">02</div>Increase by <strong>20–30% at a time</strong> — not doubling overnight</div>
+      <div class="step"><div class="step-n">03</div>Know that <strong>every budget change resets the learning phase</strong> — expect a few days of fluctuation after each increase</div>
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"how much to spend on Facebook ads beginner 2026"</em> and <em>"how to scale Facebook ads budget safely"</em></div>
+    </div>
+  </div>
+
+  <div class="checklist" id="cl6">
+    <div class="cl-title">Before You Continue →</div>
+    <div class="cl-sub">Confirm each of these before moving to analytics.</div>
+    <div class="cl-prog">Completed: <span id="p6">0</span> / 4</div>
+    <div class="cl-items" id="i6">
+      <div class="cl-item" onclick="tick(this,6)"><div class="chkbox"></div><div class="cl-lbl">I know my starting daily budget ($10–$20/day) and I'm treating it as learning spend</div></div>
+      <div class="cl-item" onclick="tick(this,6)"><div class="chkbox"></div><div class="cl-lbl">I've set an Account Spending Limit in my Billing settings</div></div>
+      <div class="cl-item" onclick="tick(this,6)"><div class="chkbox"></div><div class="cl-lbl">I know where to check my charges in Ads Manager (Billing → Payment Activity)</div></div>
+      <div class="cl-item" onclick="tick(this,6)"><div class="chkbox"></div><div class="cl-lbl">I understand the 20–30% scaling rule — I will not double my budget overnight</div></div>
+    </div>
+    <button class="btn-cont" id="b6" onclick="done(6)">Mark Complete &amp; Continue →</button>
+    <div class="btn-note" id="n6">Complete all items above to unlock the next module</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 7 — ANALYTICS & KEY METRICS
+═══════════════════════════════════════════ -->
+<div class="module" id="m7">
+  <div class="mod-eyebrow">Module 07 of 09 · Analytics</div>
+  <h1 class="mod-title">Analytics &amp;<br>Key Metrics</h1>
+  <p class="mod-intro">The numbers in Ads Manager are only useful if you know what they mean. This module gives you a plain-language breakdown of every metric that matters — and tells you how to read data without spiralling.</p>
+
+  <div class="section">
+    <div class="sec-tag">7.1 — Set Up Your Reporting Columns</div>
+    <h2 class="sec-title">Seeing the Right Data</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>In Ads Manager, click <strong>Columns → Customize Columns</strong></div>
+      <div class="step"><div class="step-n">02</div>Add: <strong>Spend · Impressions · Reach · CPM · Link Clicks · CTR · Cost Per Result · Purchases · ROAS</strong></div>
+      <div class="step"><div class="step-n">03</div>Click <strong>Save as Preset</strong> → name it "Starter View" so you can come back to it anytime</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">7.2 — Metrics Explained</div>
+    <h2 class="sec-title">What Every Number Actually Means</h2>
+    <table class="mtable">
+      <thead><tr><th>Metric</th><th>Plain English</th><th>Why It Matters</th></tr></thead>
+      <tbody>
+        <tr><td>Impressions</td><td>How many times your ad was shown</td><td>Are enough people seeing it?</td></tr>
+        <tr><td>Reach</td><td>How many unique people saw it</td><td>How wide your net is</td></tr>
+        <tr><td>CPM</td><td>Cost per 1,000 impressions</td><td>How expensive is your audience to reach?</td></tr>
+        <tr><td>CTR</td><td>% of viewers who clicked your link</td><td>Is your creative stopping the scroll?</td></tr>
+        <tr><td>CPC</td><td>Cost per link click</td><td>Efficiency of driving traffic</td></tr>
+        <tr><td>Purchases</td><td>Number of actual sales tracked by your Pixel</td><td>Your real result</td></tr>
+        <tr><td>CPA</td><td>How much you spent per sale</td><td>Is this profitable?</td></tr>
+        <tr><td>ROAS</td><td>Revenue ÷ Ad Spend</td><td>The big one — are you making money?</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">7.3 — Beginner Benchmarks</div>
+    <h2 class="sec-title">What "Good" Looks Like</h2>
+    <div class="box gold">
+      <div class="box-lbl">📊 Starting targets</div>
+      <strong>CTR above 1%</strong> = your creative is working — people are clicking<br>
+      <strong>ROAS above 1.0</strong> = you're at least breaking even (making back your ad spend)<br><br>
+      These are rough starting benchmarks. A $17 product has different math than a $197 product. What matters most early on is: are people clicking? And are clicks turning into purchases?
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">7.4 — How to Read Data Without Panicking</div>
+    <h2 class="sec-title">The Rules for Checking Your Results</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">→</div><strong>Check every 24–48 hours.</strong> Not every hour. Hourly data is noise — it will stress you out and mean nothing</div>
+      <div class="step"><div class="step-n">→</div><strong>Give it 3–5 days</strong> before making any changes. Day 1 is almost always the worst day of a campaign</div>
+      <div class="step"><div class="step-n">→</div><strong>Look at trends, not single days.</strong> One bad day does not mean a bad campaign. One good day does not mean you should double your budget</div>
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"Facebook Ads metrics explained for beginners 2026"</em> — look for a video that opens Ads Manager and walks through each column on screen</div>
+    </div>
+  </div>
+
+  <div class="checklist" id="cl7">
+    <div class="cl-title">Before You Continue →</div>
+    <div class="cl-sub">Make sure you can explain each of these before moving on.</div>
+    <div class="cl-prog">Completed: <span id="p7">0</span> / 4</div>
+    <div class="cl-items" id="i7">
+      <div class="cl-item" onclick="tick(this,7)"><div class="chkbox"></div><div class="cl-lbl">I've customised my Ads Manager columns and saved a "Starter View" preset</div></div>
+      <div class="cl-item" onclick="tick(this,7)"><div class="chkbox"></div><div class="cl-lbl">I can explain CTR, CPM, CPA, and ROAS in plain language</div></div>
+      <div class="cl-item" onclick="tick(this,7)"><div class="chkbox"></div><div class="cl-lbl">I know my beginner benchmarks: CTR 1%+ and ROAS 1.0+</div></div>
+      <div class="cl-item" onclick="tick(this,7)"><div class="chkbox"></div><div class="cl-lbl">I've committed to checking results every 24–48 hours — not hourly — and giving campaigns 3–5 days</div></div>
+    </div>
+    <button class="btn-cont" id="b7" onclick="done(7)">Mark Complete &amp; Continue →</button>
+    <div class="btn-note" id="n7">Complete all items above to unlock the next module</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 8 — TROUBLESHOOTING
+═══════════════════════════════════════════ -->
+<div class="module" id="m8">
+  <div class="mod-eyebrow">Module 08 of 09 · Troubleshooting</div>
+  <h1 class="mod-title">Troubleshooting &amp;<br>Common Mistakes</h1>
+  <p class="mod-intro">Things will go wrong. An ad will get rejected. A campaign will underperform. This module tells you exactly what to do — and lists the mistakes most beginners make so you don't have to make them.</p>
+
+  <div class="section">
+    <div class="sec-tag">8.1 — Ad Rejected?</div>
+    <h2 class="sec-title">How to Fix It</h2>
+    <p class="sec-body">Getting an ad rejected feels scary. It's almost always fixable. Here are the most common reasons:</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">Reason</div><strong>Before/after claims</strong> — e.g. "I went from $0 to $5k." Change to: "here's what changed for me" — softer, story-based language</div>
+      <div class="step"><div class="step-n">Reason</div><strong>Personal attribute language</strong> — e.g. "Are you struggling with anxiety?" Meta flags language that implies you know personal details about the viewer. Change to: "For anyone navigating…"</div>
+      <div class="step"><div class="step-n">Reason</div><strong>Prohibited content</strong> — check the rejection email for the exact policy Meta flagged</div>
+    </div>
+    <div class="steps" style="margin-top:12px">
+      <div class="step"><div class="step-n">Fix it</div>Edit the rejected ad → update the flagged copy or image → click <strong>Publish</strong> again</div>
+      <div class="step"><div class="step-n">Appeal it</div>If you think the rejection was wrong, click <strong>Request Review</strong> — a Meta human will manually re-review your ad</div>
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube search</strong><em>"Facebook ad rejected how to fix 2026"</em> — look for a video that walks through the most common rejection reasons and how to resubmit</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">8.2 — Top Beginner Mistakes</div>
+    <h2 class="sec-title">What Not to Do</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">✕</div><strong>Editing ads during the learning phase</strong> — resets everything. Wait 3–5 days minimum</div>
+      <div class="step"><div class="step-n">✕</div><strong>Judging results after 1 day</strong> — day 1 is almost always the worst. Give it time</div>
+      <div class="step"><div class="step-n">✕</div><strong>Using Engagement or Awareness objectives</strong> when you want sales — these optimise for clicks and views, not purchases</div>
+      <div class="step"><div class="step-n">✕</div><strong>Over-targeting</strong> — stacking 10 interests, restricting age too tightly. Let Meta's AI do its job</div>
+      <div class="step"><div class="step-n">✕</div><strong>Running only one ad</strong> — always have 2–3 creative variations so you have data to compare</div>
+      <div class="step"><div class="step-n">✕</div><strong>Running ads without the Pixel</strong> — Meta can't track sales and can't optimise. Always verify the Pixel first</div>
+      <div class="step"><div class="step-n">✕</div><strong>No 2FA</strong> — you've already done this, but never remove it</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">8.3 — When to Turn Off an Ad</div>
+    <h2 class="sec-title">Knowing When to Pause</h2>
+    <div class="box warn">
+      <div class="box-lbl">⚠ Wait for enough data first</div>
+      Pausing too early is one of the most expensive beginner mistakes. You need sufficient spend (at least 2–3× your product price) before you can make a valid decision.
+    </div>
+    <div class="steps" style="margin-top:14px">
+      <div class="step"><div class="step-n">Pause if</div>CPA is 3× your target after adequate spend</div>
+      <div class="step"><div class="step-n">Pause if</div>CTR is below 0.5% after 1,000+ impressions — the creative isn't working</div>
+      <div class="step"><div class="step-n">Pause if</div>ROAS is below 1.0 after sufficient data — you're losing money on every sale</div>
+      <div class="step"><div class="step-n">Don't pause</div>After one bad day. After less than $30 spent. Because you're nervous</div>
+    </div>
+  </div>
+
+  <div class="checklist" id="cl8">
+    <div class="cl-title">Before You Continue →</div>
+    <div class="cl-sub">These are things to action, not just read.</div>
+    <div class="cl-prog">Completed: <span id="p8">0</span> / 4</div>
+    <div class="cl-items" id="i8">
+      <div class="cl-item" onclick="tick(this,8)"><div class="chkbox"></div><div class="cl-lbl">I know the most common ad rejection reasons and how to edit and resubmit</div></div>
+      <div class="cl-item" onclick="tick(this,8)"><div class="chkbox"></div><div class="cl-lbl">I know when to pause an ad — and I won't panic-pause after one bad day</div></div>
+      <div class="cl-item" onclick="tick(this,8)"><div class="chkbox"></div><div class="cl-lbl">I will NOT edit my ads during the learning phase</div></div>
+      <div class="cl-item" onclick="tick(this,8)"><div class="chkbox"></div><div class="cl-lbl">I understand all 7 common beginner mistakes and I'm committed to avoiding them</div></div>
+    </div>
+    <button class="btn-cont" id="b8" onclick="done(8)">Mark Complete &amp; Continue →</button>
+    <div class="btn-note" id="n8">Complete all items above to unlock the next module</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODULE 9 — WHAT COMES NEXT
+═══════════════════════════════════════════ -->
+<div class="module" id="m9">
+  <div class="mod-eyebrow">Module 09 of 09 · Final Module</div>
+  <h1 class="mod-title">What Comes<br>Next</h1>
+  <p class="mod-intro">You've set everything up, run your first campaign, and learned how to read your results. Now it's time to think like an operator — reviewing what the data is telling you, and knowing exactly what to improve next.</p>
+
+  <div class="section">
+    <div class="sec-tag">9.1 — Reviewing Your First Campaign</div>
+    <h2 class="sec-title">What to Look At After 7 Days</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div>Open Ads Manager → look at your Starter View columns after 5–7 days</div>
+      <div class="step"><div class="step-n">02</div>Was CTR above 1%? If not — the creative or copy isn't stopping the scroll. Test a different image or opening line</div>
+      <div class="step"><div class="step-n">03</div>Was ROAS above 1.0? If not — the issue could be your offer, your price, or your landing page. Not always the ad itself</div>
+      <div class="step"><div class="step-n">04</div>What would you do differently? Write it down — your second campaign is always better than your first</div>
+    </div>
+    <div class="box gold">
+      <div class="box-lbl">💡 The iteration mindset</div>
+      Your first campaign is never your best campaign. Its job is to give you data. Every campaign after that is an improvement. The people who succeed with ads are the ones who keep going — not the ones who get it right on attempt one.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">9.2 — Concepts to Explore Next</div>
+    <h2 class="sec-title">What to Learn After This</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">Retargeting</div>Showing ads to people who visited your site but didn't buy. They already know you — much cheaper to convert than cold traffic</div>
+      <div class="step"><div class="step-n">Lookalike Audiences</div>Meta finds new people who look like your existing buyers. One of the most powerful tools once you have purchase data</div>
+      <div class="step"><div class="step-n">Creative Testing</div>Running 2–5 ad variations simultaneously to find which image, hook, or copy angle wins — then scaling the winner</div>
+      <div class="step"><div class="step-n">Scaling</div>Increasing budget on what's already working, slowly, using the 20–30% rule</div>
+    </div>
+    <div class="vid">
+      <div class="vid-icon">▶</div>
+      <div class="vid-text"><strong>YouTube searches for your next level</strong><em>"Facebook retargeting ads tutorial 2026"</em> · <em>"how to create lookalike audiences Meta 2026"</em> · <em>"how to scale Facebook ads for beginners"</em> · <em>"Facebook ad creative testing strategy"</em></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-tag">9.3 — Your Next Step</div>
+    <h2 class="sec-title">The Setup Got You Started. The Quiet Sell Builds the System.</h2>
+    <p class="sec-body">You now know how to set up the accounts, install the Pixel, protect your account, navigate Ads Manager, launch a campaign, manage a budget, and read your data. That's more than most people who've been "trying" ads for years.</p>
+    <p class="sec-body">But running ads that consistently make money — ads that stop the scroll, speak to the right person, and convert at a level that actually builds a business — that requires a deeper system. That's what <strong>AMCREATIVE: The Quiet Sell</strong> teaches.</p>
+    <div class="box tip">
+      <div class="box-lbl">→ Where to go next</div>
+      You have the foundation. Now go learn the strategy behind it — hook psychology, creative testing, funnel diagnostics, and how to build a system that compounds over time.
+    </div>
+  </div>
+
+  <div class="checklist" id="cl9">
+    <div class="cl-title">Complete The Setup →</div>
+    <div class="cl-sub">Check off each item to officially finish this course.</div>
+    <div class="cl-prog">Completed: <span id="p9">0</span> / 5</div>
+    <div class="cl-items" id="i9">
+      <div class="cl-item" onclick="tick(this,9)"><div class="chkbox"></div><div class="cl-lbl">I've reviewed my first campaign results after 5–7 days</div></div>
+      <div class="cl-item" onclick="tick(this,9)"><div class="chkbox"></div><div class="cl-lbl">I've written down what I'd do differently in my next campaign</div></div>
+      <div class="cl-item" onclick="tick(this,9)"><div class="chkbox"></div><div class="cl-lbl">I understand what retargeting, lookalike audiences, and creative testing are</div></div>
+      <div class="cl-item" onclick="tick(this,9)"><div class="chkbox"></div><div class="cl-lbl">I'm committed to the iteration mindset — I'm not quitting after one campaign</div></div>
+      <div class="cl-item" onclick="tick(this,9)"><div class="chkbox"></div><div class="cl-lbl">I'm ready to level up to The Quiet Sell and learn the full system</div></div>
+    </div>
+    <button class="btn-cont final" id="b9" onclick="done(9)">Complete The Setup ✓</button>
+    <div class="btn-note" id="n9">Check off all items to complete the course</div>
+  </div>
+</div>
+
+<!-- FINAL SCREEN -->
+<div class="final-screen" id="finalScreen">
+  <div class="final-icon">🎯</div>
+  <h1 class="final-h">You've Completed<br><em>The Setup.</em></h1>
+  <p class="final-p">You went from zero — no accounts, no Pixel, no idea what Ads Manager even was — to a fully set-up, secured, tracked, and running ad system.</p>
+  <p class="final-p">That's the foundation. Now go build on it.</p>
+  <a href="https://stan.store/AMdigital_era/p/amcreative--the-quiet-sell" target="_blank" class="final-cta">Upgrade to The Quiet Sell →</a>
+  <p style="margin-top:16px;font-size:12px;color:var(--text3);">Questions? @amdigital_era on Instagram</p>
+</div>
+
+</main>
+</div>
+
+<script>
+  const TOTAL = 9;
+  const KEY = 'amcreative_setup_v2';
+  let S = JSON.parse(localStorage.getItem(KEY) || '{}');
+  if (!S.done) S.done = [];
+  if (!S.checks) S.checks = {};
+  if (!S.cur) S.cur = 1;
+
+  function save() { localStorage.setItem(KEY, JSON.stringify(S)); }
+
+  function tick(el, m) {
+    el.classList.toggle('checked');
+    el.querySelector('.chkbox').textContent = el.classList.contains('checked') ? '✓' : '';
+    const items = [...document.querySelectorAll(`#i${m} .cl-item`)];
+    S.checks[m] = items.map(i => i.classList.contains('checked'));
+    updateProgress(m);
+    save();
+  }
+
+  function updateProgress(m) {
+    const items = document.querySelectorAll(`#i${m} .cl-item`);
+    const checked = document.querySelectorAll(`#i${m} .cl-item.checked`).length;
+    const total = items.length;
+    document.getElementById(`p${m}`).textContent = checked;
+    const btn = document.getElementById(`b${m}`);
+    const note = document.getElementById(`n${m}`);
+    if (checked === total) {
+      btn.classList.add('on');
+      note.style.display = 'none';
+    } else {
+      btn.classList.remove('on');
+      note.style.display = 'block';
+    }
+  }
+
+  function done(m) {
+    if (!S.done.includes(m)) S.done.push(m);
+    save();
+    updateSidebar();
+    updateGlobal();
+    if (m === TOTAL) {
+      document.getElementById(`m${m}`).classList.remove('active');
+      document.getElementById('finalScreen').classList.add('active');
+      document.getElementById('gBar').style.width = '100%';
+      document.getElementById('gPct').textContent = '100%';
+    } else {
+      nav(m + 1);
+    }
+  }
+
+  function nav(m) {
+    const unlocked = m === 1 || S.done.includes(m - 1);
+    if (!unlocked) return;
+    document.querySelectorAll('.module').forEach(el => el.classList.remove('active'));
+    document.getElementById('finalScreen').classList.remove('active');
+    document.getElementById(`m${m}`).classList.add('active');
+    S.cur = m;
+    save();
+    updateSidebar();
+    restoreChecks(m);
+    window.scrollTo(0, 0);
+  }
+
+  function restoreChecks(m) {
+    const saved = S.checks[m] || [];
+    const items = [...document.querySelectorAll(`#i${m} .cl-item`)];
+    items.forEach((item, i) => {
+      if (saved[i]) {
+        item.classList.add('checked');
+        item.querySelector('.chkbox').textContent = '✓';
+      } else {
+        item.classList.remove('checked');
+        item.querySelector('.chkbox').textContent = '';
+      }
+    });
+    updateProgress(m);
+  }
+
+  function updateSidebar() {
+    for (let i = 1; i <= TOTAL; i++) {
+      const el = document.querySelector(`.sidebar-item[data-m="${i}"]`);
+      el.classList.remove('active', 'done', 'locked');
+      if (S.done.includes(i)) {
+        el.classList.add('done');
+      } else if (i === 1 || S.done.includes(i - 1)) {
+        // unlocked — no class
+      } else {
+        el.classList.add('locked');
+      }
+      if (i === S.cur && !S.done.includes(i)) {
+        el.classList.add('active');
+      }
+    }
+  }
+
+  function updateGlobal() {
+    const pct = Math.round((S.done.length / TOTAL) * 100);
+    document.getElementById('gBar').style.width = pct + '%';
+    document.getElementById('gPct').textContent = pct + '%';
+  }
+
+  function init() {
+    updateSidebar();
+    updateGlobal();
+    document.querySelectorAll('.module').forEach(el => el.classList.remove('active'));
+    if (S.done.length === TOTAL) {
+      document.getElementById('finalScreen').classList.add('active');
+      document.getElementById('gBar').style.width = '100%';
+      document.getElementById('gPct').textContent = '100%';
+    } else {
+      document.getElementById(`m${S.cur}`).classList.add('active');
+      restoreChecks(S.cur);
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
